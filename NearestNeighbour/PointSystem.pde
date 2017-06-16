@@ -1,17 +1,28 @@
 class PointSystem {
   
   ArrayList<Point> points = new ArrayList<Point>();
-  float smallestDist = 800.;
+  float smallestDist = 900.;  //Smallest distance is the width or height of sketch
   float currentDist;
-  
+  int pointNum = 60;        //Number of points
+  float spacing = TWO_PI/pointNum;
+  int amp1 = int(random(10, 30));
+  int amp2 = int(random(10, 30));
+  float magnify = 400;
+
+  ArrayList<Connector> connectors = new ArrayList<Connector>();
+    
+    
   PointSystem() {
     
-     
-  for (int i = 0; i < pointNum; ++i) {
-    Point p = new Point();
-    points.add(p);
-    println("x:" + p.pos.x);
-     println("y:" + p.pos.y);
+    //Creating point positions using Roses of Grandi algorithm. 
+    for (int i = 0; i < pointNum; ++i) {
+    
+      float x = cos(i * spacing * amp1) * cos(i * spacing * amp2) * magnify;
+      float y = sin(i * spacing * amp1) * cos(i * spacing * amp2) * magnify;
+      
+      Point p = new Point(new PVector(x, y));
+      points.add(p);
+
     
     } 
   }
@@ -21,33 +32,59 @@ class PointSystem {
 
  
      void checkDistance() {
- Point ap1 = new Point();
- Point ap2 = new Point();
+   
+       //Points to store for connection end points
+       Point ap1 = new Point(new PVector(0, 0));
+       Point ap2 = new Point(new PVector(0, 0));
        
-  for (int i = 0; i < points.size()-1; ++i) {
-    
-     for (int j = i+1; j < points.size(); ++j) {
        
-    Point p = points.get(i);
-    Point p2 = points.get(j);
-    println("i: " + i + " j: " + j);
+       
+       //Loop through arrayList
+        for (int i = 0; i < points.size(); ++i) {
     
-    currentDist = p.distance(p, p2);
+           for (int j = 0; j < points.size(); ++j) {
+       
+           //Check that point is not checking against itself
+             if (i != j) {
+              Point p = points.get(i);
+              Point p2 = points.get(j);
+
+            
+            //Compute Euclidean distance
+             currentDist = p.distance(p, p2);
+
+            //Setting smallestDist to be smallest distance found
+            if (currentDist < smallestDist) {
+                smallestDist = currentDist;
+                ap1 = p;
+                ap2 = p2;
+                
+                
+                //Creating a connector if the smallestDist is less than 150
+                if (smallestDist < 150) {
+      
+                //Pass through points to create new line between them
+                   connectors.add(new Connector(ap1, ap2));
+      
+                }
     
+              }
+     
+            
+          }
+  
+  
+     //Remove first connector in arrayList if size exceeds 20
+          if (connectors.size() > 20) {
     
-    if (currentDist < smallestDist) {
-    smallestDist = currentDist;
-    ap1 = p;
-    ap2 = p2;
-    
-    }
-    
-    
-    
-    println(smallestDist);
+            connectors.remove(0);
+      
+           }
+  
    }
    
-   connectors.add(new Connector(ap1, ap2));
+   //connectors.add(new Connector(ap1, ap2));
+   //Reseting 
    smallestDist = 800.;
    
    
@@ -55,16 +92,44 @@ class PointSystem {
    
  }
   
+/*void removeConnectors() {
+ 
+ for (int i = 0; i < connectors.size(); i++) {
+  Connector c = connectors.get(i); 
+  
+    if (sqrt( sq(c.p1.pos.x-c.p2.pos.x) + sq(c.p1.pos.y-c.p2.pos.y)) > 150) {
+      
+      connectors.remove(i);
+    }
+    
+  }
 
   
-  void run() {
+}*/
+
+  void runConnectors() {
     
-    for (Point p: points) {
- p.display(); 
- p.update();
-  
-}
-  
+     for (Connector c: connectors) {
+   c.display(); 
+  }
   }
   
-}
+  
+  
+  void run() {
+    checkDistance();
+    //removeConnectors();
+    for (Point p: points) {
+     p.display(); 
+     p.update();
+     p.checkEdges();
+ 
+  //removeConnectors();
+    }
+    
+     runConnectors();
+  
+  }
+  }
+
+  
