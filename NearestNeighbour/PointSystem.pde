@@ -3,7 +3,7 @@ class PointSystem {
   ArrayList<Point> points = new ArrayList<Point>();
   float smallestDist = 900.;  //Smallest distance is the width or height of sketch
   float currentDist;
-  int pointNum = 60;        //Number of points
+  int pointNum = 200;        //Number of points
   float spacing = TWO_PI/pointNum;
   int amp1 = int(random(10, 30));
   int amp2 = int(random(10, 30));
@@ -61,7 +61,7 @@ class PointSystem {
                 
                 
                 //Creating a connector if the smallestDist is less than 150
-                if (smallestDist < 150) {
+                if (smallestDist < 325) {
       
                 //Pass through points to create new line between them
                    connectors.add(new Connector(ap1, ap2));
@@ -75,7 +75,7 @@ class PointSystem {
   
   
      //Remove first connector in arrayList if size exceeds 20
-          if (connectors.size() > 20) {
+          if (connectors.size() > 200) {
     
             connectors.remove(0);
       

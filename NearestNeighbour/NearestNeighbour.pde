@@ -30,6 +30,15 @@ void draw() {
 
   popMatrix();
 
+
+
+
+fill(0, 0, 30);
+noStroke();
+  rect(width/5, height/5,   width/5*3,    25);
+  rect(width/5, height/5,   25,           height/5*3);
+  rect(width/5, height/5*4, width/5*3,    25);
+  rect(width/5*4, height/5, 25,           height/5*3+25);
   
 }
 

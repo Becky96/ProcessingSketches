@@ -46,16 +46,16 @@ class Point {
   
   void checkEdges() {
     
-   if (pos.x > 400) {
+   if (pos.x > width/2-50) {
      acceleration.x*=-1;
      
-   } if (pos.x < -400) {
+   } if (pos.x < -width/2+50) {
      acceleration.x*=-1;
      
-   } if (pos.y > 400) {
+   } if (pos.y > height/2-50) {
      acceleration.y*=-1;
      
-   } if (pos.y < -400) {
+   } if (pos.y < -height/2+50) {
      acceleration.y*=-1;
      
    }

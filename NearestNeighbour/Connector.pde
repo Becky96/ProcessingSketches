@@ -15,7 +15,7 @@ class Connector {
   void display() {
    
     //line(mainPoint.pos.x, mainPoint.pos.y, p1.pos.x, p1.pos.y);
-    stroke(200, 10);
+    stroke(200, 5);
     line(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y);
     
   
